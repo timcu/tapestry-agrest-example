@@ -7,11 +7,11 @@ To run application
 
 ## Example URLs
 
-- http://localhost:8089/tapestry-agrest/  # Tapestry demo home page
-- http://localhost:8089/tapestry-agrest/about  # Display data from database in Tapestry web page
-- http://localhost:8089/tapestry-agrest/rest/mydomainobject  # REST results using tapestry-resteasy
-- http://localhost:8089/tapestry-agrest/rest/category  # REST results using tapestry-resteasy and cayenne, 
-- http://localhost:8089/tapestry-agrest/rest/book  # REST results using tapestry-resteasy and cayenne and agrest  # TODO fixme
+- http://localhost:8089/tapestry-agrest-example/  # Tapestry demo home page
+- http://localhost:8089/tapestry-agrest-example/about  # Display data from database in Tapestry web page
+- http://localhost:8089/tapestry-agrest-example/rest/mydomainobject  # REST results using tapestry-resteasy
+- http://localhost:8089/tapestry-agrest-example/rest/category  # REST results using tapestry-resteasy and cayenne, 
+- http://localhost:8089/tapestry-agrest-example/rest/book  # REST results using tapestry-resteasy and cayenne and agrest  # TODO fixme
 
 ## References
 
