@@ -1,21 +1,30 @@
 package com.triptera.tagrest.services;
 
+import java.io.IOException;
+import java.util.UUID;
+
+import org.apache.cayenne.ObjectContext;
 import org.apache.tapestry5.SymbolConstants;
+import org.apache.tapestry5.commons.Configuration;
 import org.apache.tapestry5.commons.MappedConfiguration;
 import org.apache.tapestry5.commons.OrderedConfiguration;
-import org.apache.tapestry5.ioc.ServiceBinder;
-import org.apache.tapestry5.ioc.annotations.Contribute;
-import org.apache.tapestry5.ioc.annotations.Local;
-import org.apache.tapestry5.ioc.services.ApplicationDefaults;
-import org.apache.tapestry5.ioc.services.SymbolProvider;
 import org.apache.tapestry5.http.services.Request;
 import org.apache.tapestry5.http.services.RequestFilter;
 import org.apache.tapestry5.http.services.RequestHandler;
 import org.apache.tapestry5.http.services.Response;
+import org.apache.tapestry5.ioc.ServiceBinder;
+import org.apache.tapestry5.ioc.annotations.Contribute;
+import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.annotations.Local;
+import org.apache.tapestry5.ioc.annotations.Startup;
+import org.apache.tapestry5.ioc.services.ApplicationDefaults;
+import org.apache.tapestry5.ioc.services.SymbolProvider;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.UUID;
+import com.triptera.tagrest.model.cayenne.Book;
+import com.triptera.tagrest.model.cayenne.Category;
+import com.triptera.tagrest.rest.BookResource;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry, it's a good place to
@@ -23,6 +32,28 @@ import java.util.UUID;
  */
 public class AppModule
 {
+    private static final Logger logger = LoggerFactory.getLogger(AppModule.class);
+    
+    @Startup
+    public static void startup(@Inject CayenneService svcCayenne) {
+      ObjectContext oc = svcCayenne.newContext();
+      Category category1, category2;
+      Book book1;
+      
+      category1 = oc.newObject(Category.class);
+      category1.setDescription("Makes you sleep");
+      category1.setName("Drama");
+      category2 = oc.newObject(Category.class);
+      category2.setDescription("Makes you laugh");
+      category2.setName("Comedy");
+      book1 = oc.newObject(Book.class);
+      book1.setAuthor("Douglas Adams");
+      book1.setCategory(category2);
+      book1.setTitle("So long and thanks for all the fish");
+      oc.commitChanges();
+      logger.warn("Created two categories and one book in startup");
+    }
+    
     public static void bind(ServiceBinder binder)
     {
         // binder.bind(MyServiceInterface.class, MyServiceImpl.class);
@@ -31,7 +62,23 @@ public class AppModule
         // Use service builder methods (example below) when the implementation
         // is provided inline, or requires more initialization than simply
         // invoking the constructor.
+      binder.bind(CayenneService.class, CayenneServiceImpl.class);
+      binder.bind(AgrestService.class, AgrestServiceImpl.class);
     }
+    @Contribute(javax.ws.rs.core.Application.class)
+    public static void configureRestProviders(Configuration<Object> singletons, AgrestService svcAgrest) {
+      
+      /* Following line required for http://localhost:8089/tapestry-agrest/rest/category 
+       * However tapestry-resteasy doesn't recognise Resource type so throws an error TODO */ 
+      //singletons.add(svcAgrest.agRuntime());
+      
+      /* Following line should not be needed because tapestry-resteasy searches rest package automatically */
+      //singletons.addInstance(BookResource.class);
+      
+      /* Security not implemented so don't uncomment following yet */
+      //singletons.addInstance(YourCredentialsInterceptor.class);
+    }
+
 
     public static void contributeFactoryDefaults(MappedConfiguration<String, Object> configuration)
     {
