@@ -2,7 +2,6 @@ package com.triptera.tagrest.pages;
 
 import java.util.List;
 
-import org.apache.cayenne.ObjectContext;
 import org.apache.cayenne.query.ObjectSelect;
 import org.apache.tapestry5.annotations.PageActivationContext;
 import org.apache.tapestry5.annotations.Property;

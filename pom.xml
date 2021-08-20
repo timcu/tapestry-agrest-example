@@ -10,11 +10,11 @@
 	<packaging>war</packaging>
 	<name>tapestry-agrest Tapestry 5 Application</name>
 	<properties>
-		<java.version>1.8</java.version>
-		<tapestry-version>5.7.2</tapestry-version>
+		<java.version>11</java.version>
+		<tapestry-version>5.7.3</tapestry-version>
 		<tapestry-testify-version>1.0.4</tapestry-testify-version>
 		<tapestry-xpath-version>1.0.1</tapestry-xpath-version>
-		<jackson-version>2.9.6</jackson-version>
+		<jackson-version>2.12.0</jackson-version>
 		<geb-version>2.3.1</geb-version>
 		<htmlunit-driver-version>2.33.3</htmlunit-driver-version>
 		<json-version>1.1.2</json-version>
@@ -60,6 +60,28 @@
 			<artifactId>tapestry-core</artifactId>
 			<version>${tapestry-version}</version>
 			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.xml.bind</groupId>
+					<artifactId>jaxb-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.inject</groupId>
+					<artifactId>javax.inject</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>jakarta.activation</groupId>
+					<artifactId>jakarta.activation-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.annotation</groupId>
+					<artifactId>javax.annotation-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.xml.ws</groupId>
+					<artifactId>jaxws-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- CoffeeScript & Less support, plus resource minification -->
 		<dependency>
@@ -78,11 +100,22 @@
 			<groupId>org.eclipse</groupId>
 			<artifactId>yasson</artifactId>
 			<version>${yasson-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.inject</groupId>
+					<artifactId>javax.inject</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish</groupId>
 			<artifactId>javax.json</artifactId>
 			<version>${json-version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>com.fasterxml.jackson.core</groupId>
+		    <artifactId>jackson-annotations</artifactId>
+		    <version>${jackson-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -104,11 +137,33 @@
 			<groupId>org.tynamo</groupId>
 			<artifactId>tapestry-resteasy</artifactId>
 			<version>0.7.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.jboss.spec.javax.ws.rs</groupId>
+					<artifactId>jboss-jaxrs-api_2.1_spec</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.jboss.spec.javax.xml.bind</groupId>
+					<artifactId>jboss-jaxb-api_2.3_spec</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.jboss.spec.javax.annotation</groupId>
+					<artifactId>
+						jboss-annotations-api_1.3_spec
+					</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jackson-provider</artifactId>
-			<version>4.0.0.Beta5</version>
+			<artifactId>resteasy-jackson2-provider</artifactId>
+			<version>4.5.3.Final</version>
+			<exclusions>
+				<exclusion>
+					<groupId>jakarta.activation</groupId>
+					<artifactId>jakarta.activation-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.cayenne</groupId>
@@ -128,6 +183,12 @@
 		<dependency>
 			<groupId>io.agrest</groupId>
 			<artifactId>agrest-engine</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.ws.rs</groupId>
+					<artifactId>javax.ws.rs-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<!-- You will likely also need "agrest-cayenne", as this is the most capable 
 			Agrest backend as of now -->
